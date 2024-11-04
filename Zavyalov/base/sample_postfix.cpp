@@ -12,6 +12,7 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	cout << "Введите арифметическое выражение: ";
 	getline(cin, expression);
+	expression = "(a + b) * ) c + d(";
 	cout << expression << endl;
 	TPostfix postfix(expression);
 	cout << "Арифметическое выражение: " << postfix.GetInfix() << endl;

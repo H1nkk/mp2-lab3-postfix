@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\gtest;..\base</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../base;../gtest</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -85,6 +85,14 @@
     <ClCompile Include="test_main.cpp" />
     <ClCompile Include="test_tpostfix.cpp" />
     <ClCompile Include="test_tstack.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\base\base.vcxproj">
+      <Project>{4854d7b0-72b7-4276-be33-bfadbc979165}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\gtest\gtest.vcxproj">
+      <Project>{60932afc-7808-48b7-b3bf-f2bc151c0065}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
