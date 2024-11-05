@@ -109,6 +109,17 @@ public:
 					throw alert;
 				}
 			}
+
+			// check if no sequential operands 
+			if (('a' <= prev && prev <= 'z') || ('A' <= prev && prev <= 'Z')) {
+				if (('a' <= cur && cur <= 'z') || ('A' <= cur && cur <= 'Z')) {
+					string alert = "Multi-character operands are not supported. (At index";
+					alert += to_string(i);
+					alert += ")";
+					throw alert;
+				}
+			}
+
 			prev = cur;
 		}
 
