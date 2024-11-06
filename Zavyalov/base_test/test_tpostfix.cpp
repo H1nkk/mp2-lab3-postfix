@@ -63,3 +63,54 @@ TEST(TPostfix, calculation_check) {
 	double ans = 3.24389 * 1e6;
 	ASSERT_TRUE(fabs(res - ans) <= 1);
 }
+
+TEST(TPostfix, get_infix_works_properly) {
+	TPostfix postfix("(a + b * c) * (b / d - g)");
+	postfix.ToPostfix();
+	map<char, double> ops;
+	ops['a'] = 12.8;
+	ops['b'] = 534.64;
+	ops['c'] = 756.65;
+	ops['d'] = 53.365;
+	ops['g'] = 2.0;
+	double res = postfix.Calculate(ops);
+	string s = postfix.GetInfix();
+	ASSERT_TRUE("(a+b*c)*(b/d-g)" == s);
+}
+
+TEST(TPostfix, get_postfix_works_properly) {
+	TPostfix postfix("(a + b * c) * (b / d - g)");
+	postfix.ToPostfix();
+	map<char, double> ops;
+	ops['a'] = 12.8;
+	ops['b'] = 534.64;
+	ops['c'] = 756.65;
+	ops['d'] = 53.365;
+	ops['g'] = 2.0;
+	double res = postfix.Calculate(ops);
+	string s = postfix.GetPostfix();
+	ASSERT_TRUE("abc*+bd/g-*" == s);
+}
+
+TEST(TPostfix, infix_change_works_properly) {
+	TPostfix postfix("(a + b * c) * (b / d - g) + (a + b * c) * (b / d - g) * (a + b * c) * (b / d - g) / (a + b * c) * (b / d - g)");
+	postfix.ToPostfix();
+	postfix.change("(a + b * c) * (b / d - g)");
+	map<char, double> ops;
+	ops['a'] = 12.8;
+	ops['b'] = 534.64;
+	ops['c'] = 756.65;
+	ops['d'] = 53.365;
+	ops['g'] = 2.0;
+	double res = postfix.Calculate(ops);
+	double ans = 3.24389 * 1e6;
+	ASSERT_TRUE(fabs(res - ans) <= 1);
+}
+
+TEST(TPostfix, get_operands_works_properly) {
+	TPostfix postfix("(a + b * c) * (b / d - g) + (a + b * c) * (b / d - g) * (a + b * c) * (b / d - g) / (a + b * c) * (b / d - g)");
+	postfix.ToPostfix();
+	vector<char> res = postfix.GetOperands();
+	vector<char> ops = { 'a','b','c','d','g' };
+	ASSERT_TRUE(ops == res);
+}

@@ -16,13 +16,12 @@ public:
 	{
 		size = _size;
 		top = -1;
-		if ((size < 1) || (size > MaxStackSize))
-		throw size;
+		if ((size < 1) || (size > MaxStackSize)) throw "Size must be more than 0 and less than 101";
 		pMem = new T[size];
 	}
 
 	bool full() const noexcept {
-		return top == size - 1; // условие правильное???
+		return top == size - 1;
 	}
 
 	void push(T val) { // not T& because char uses 1 byte, while & uses 4 or 8 bytes

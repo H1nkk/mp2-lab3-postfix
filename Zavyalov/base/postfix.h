@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-
 #include "stack.h"
 #include <string>
 #include <map>
@@ -14,37 +13,10 @@ class TPostfix
 {
 	string infix;
 	string postfix;
-	vector<char> lexems; // char -> string
+	vector<char> lexems;
 	map<char, int> priority;
 	map<char, double> operands;
 
-	void Parse() {
-		check();
-		despace();
-		for (char c : infix) {
-			lexems.push_back(c);
-		}
-	}
-
-public:
-	TPostfix(string infx = "") : infix(infx) {
-		priority = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2} };
-	}
-	string GetInfix() { return infix; }
-	string GetPostfix() { return postfix; }
-	
-	void change(string new_inf) {
-		infix = new_inf;
-		ToPostfix();
-	}
-	void despace() {
-		string tmp;
-		for (char x : infix) {
-			if (x != ' ')
-				tmp += x;
-		}
-		infix = tmp;
-	}
 	void check() {
 		if (infix == "") throw "Cannot calculate empty expression";
 
@@ -67,8 +39,7 @@ public:
 			ok |= cur == '*';
 			ok |= cur == '(';
 			ok |= cur == ')';
-			// ok |= ('0' <= cur && cur <= '9'); // для констант, пока не реализовал
-			// ok |= cur == '.'; //  для floating point констант, пока не реализовал
+
 			if (!ok) {
 				string alert = "Invalid symbol at index ";
 				alert += to_string(i);
@@ -95,7 +66,7 @@ public:
 
 			// check if no sequential operation signs БЕЗ УЧЕТА УНАРНЫХ +-
 			if (operations.count(cur)) {
-				if (prev == '(') { // ПОКА БЕЗ УНАРНЫХ +-
+				if (prev == '(') {
 					string alert = "Operation ";
 					alert += cur;
 					alert += " right after opening parenthesis is not allowed. (At index ";
@@ -127,6 +98,38 @@ public:
 			throw "Mismatch of opening and closing brackets";
 		}
 	}
+
+	void despace() {
+		string tmp;
+		for (char x : infix) {
+			if (x != ' ')
+				tmp += x;
+		}
+		infix = tmp;
+	}
+
+	void Parse() {
+		lexems.clear();
+		check();
+		despace();
+		for (char c : infix) {
+			lexems.push_back(c);
+		}
+	}
+
+public:
+	TPostfix(string infx = "") : infix(infx) {
+		priority = { {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2} };
+	}
+	string GetInfix() { return infix; }
+	string GetPostfix() { return postfix; }
+	
+	void change(string new_inf) {
+		infix = new_inf;
+		ToPostfix();
+	}
+
+	
 	string ToPostfix() {
 		Parse();
 		TStack<char> st(100);
@@ -172,7 +175,7 @@ public:
 	vector<char> GetOperands() const {
 		vector<char> op;
 		for (const auto& item : operands)
-			op.push_back(item.first); // ещё операндами мб консты
+			op.push_back(item.first); 
 		return op;
 	}
 
